@@ -4,19 +4,9 @@ Sverre Lillelien
 November 28th, 2018
 
 ## Proposal
-_(approx. 2-3 pages)_
-https://www.kaggle.com/dgawlik/nyse/kernels
-https://github.com/deadskull7/New-York-Stock-Exchange-Predictions-RNN-LSTM/blob/master/New%20York%20Stock%20Exchange%20Predictions%20RNN-LSTM.ipynb
-https://www.kaggle.com/dkmostafa/predicting-stock-market-using-linear-regression
-https://www.kaggle.com/raoulma/ny-stock-price-prediction-rnn-lstm-gru
-https://www.kaggle.com/benjibb/lstm-stock-prediction-20170507/comments
 
-https://www.kaggle.com/sreejay222/s-p-stock-analysis-for-abt-abbott-laboratories
-https://www.kaggle.com/janiobachmann/s-p-500-simple-forecasting-with-prophet
-https://www.youtube.com/watch?v=0IHy7J44Xxo&index=10&list=PLQVvvaa0QuDcOdF96TBtRtuQksErCEBYZ
 
 ### Domain Background
-_(approx. 1-2 paragraphs)_
 
 Automation of stock trading has been among the most popular uses of advances in
 hardware and machine learning, and has been a topic of interest to academics (http://cs229.stanford.edu/proj2012/BernalFokPidaparthi-FinancialMarketTimeSeriesPredictionwithRecurrentNeural.pdf)
@@ -39,7 +29,6 @@ help us filter through some of the noise in the stock market might give us an
 edge and narrow our focus when selecting stocks, would be valuable.
 
 ### Problem Statement
-_(approx. 1 paragraph)_
 
 The problem I wish to analyze in this project is whether we can predict the
 future price of a stock. The scope of this project will be limited due to time
@@ -49,7 +38,6 @@ be a useful starting point to elaborate further on, and expand the analysis.
 
 
 ### Datasets and Inputs
-_(approx. 2-3 paragraphs)_
 
 My data set consists of five years of stock data for SP 500 companies. The data
 includes opening prices, as well as high, low and closing prices. The data set
@@ -60,23 +48,24 @@ may or may not be used, depending on how the project develops and the time I
 have available.
 
 ### Solution Statement
-_(approx. 1 paragraph)_
 
 "Solving" the problem is measured by obtaining future stock prices in USD, and
 is as such quantifiable and easy to understand.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
 
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
+I am a bit unsure of the appropriate benchmark model in this case, but the
+stock prices are given, and can be checked against the predictions. Any feedback
+on models appreciated.
 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
+My plan is to test different models and try to experiment with model paramterers
+to find good fits, and evaluate the model accuracy and regression metrics if
+relevant, like mean square error. These metrics will be subject to change as the
+project takes shape.
 
 ### Project Design
-_(approx. 1 page)_
 
 Coming up with a capstone proposal I have spent a lot of time thinking about
 different problems, starting to work on some, quickly discarding others. Simply
@@ -87,21 +76,21 @@ or all the difficulties that can arise trying to apply ML-techniques to problems
 
 In the process of writing this proposal, I have gone through several data sets
 trying to find the most suitable ones. At first I attempted to create my own
-data set via Quandl's API, and I tried to improve upon a data set I downloaded
-using Yahoo Finance some time ago, only to find that they no longer offer the
-same services as before.
+data set via Quandl's API (https://www.quandl.com), and I tried to improve upon
+a data set downloaded using Yahoo Finance some time ago, only to find that they
+no longer offer the same services as before.
 
 My task now is preparing the data set for further analysis, and preprocessing it
-for machine learning.
+for machine learning. I will visualize some stocks prices to look at different
+companies and trends in general, and see if we can learn something from looking
+at specific sectors or companies over time.
 
-In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+I will then attempt to apply different machine learning
+models. Neural networks are widely used to predict stock prices. If I succeed in
+labeling the stocks as either buy or sell using some metrics like percent change
+in price over a period, I want to try and classify
+using random forest. Ideally, this labeling would incorporate financial data
+from the accounts as well, but this might be beyond the scope of this project.
+
 
 -----------
-
-**Before submitting your proposal, ask yourself. . .**
-
-- Does the proposal you have written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Solution Statement** and **Project Design**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your proposal?
-- Have you properly proofread your proposal to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
