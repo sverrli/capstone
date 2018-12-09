@@ -5,7 +5,7 @@ Sverre Lillelien  https://stackedit.io/
 December 3rd, 2018
 
 ## I. Definition
-_(approx. 1-2 pages)_
+
 
 ### Project Overview
 
@@ -28,19 +28,17 @@ The tasks I will go through are the following:
 4. Train a classifier to label stocks as buy, sell or hold
 5. Refine to model improve it over the benchmark model
 
-"Solving" the problem is measured by classifying some stock as either a buy or sell, or to simply keep holding the stock. As such it is quantifiable and easy to understand. To help me solve this problem I will attempt to use supervised learning, more specifically SVM, k-nearest neighbors and random forest classifier.
+"Solving" the problem is measured by classifying some stock as either a buy or sell, or to simply keep holding the stock. As such it is quantifiable and easy to understand. To help me solve this problem I will utilize supervised learning, more specifically SVM, k-nearest neighbors and random forest classifiers.
 
 ### Metrics
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
-- _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
 
+Accuracy, precision and AUC could all be relevant metrics to measure performance of a model in this project. Accuracy requires the data set classes to be balanced, and this is only true to a certain extent in this case. We will still consider the accuracy of the model, but I believe *precision* could be the key metric to judge the model on. One way this project might influence our trading strategy would be to use the model to identify candidate stocks to buy. In this case, we want to be fairly certain that if the model classifies a stock as buy, this can be trusted. We want to limit the amount of false positives, as this could cause us to lose a lot of money. This favors precision as a metric. Conversely, we can accept some type-II errors from the model. That is, failing to identify possible buy-candidates. This would be a lost opportunity, but not something that would cause us to lose money. All of this points towards precision as a valid metric.
 
 ## II. Analysis
 _(approx. 2-4 pages)_
 
 ### Data Exploration
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
+In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a data set (or data sets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
 - _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
 - _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
 - _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
@@ -54,17 +52,44 @@ The data set contains price data and trade volume for all S&P500 stocks over a f
 - volume - number of stocks traded during the day (integer)
 - name - the stock ticker (string)
 
-The data set contains 619 040 rows of data. Each row contains a set of prices for a certain stock ticker, for a certain date, beginning in February 2003 and going till February 2018.
+The data set contains 619 040 rows of data. Each row contains a set of prices for a certain stock ticker, for a certain date. Data has been captured from February 2003 and going till February 2018.
 
-** insert image
+![enter image description here](https://lh3.googleusercontent.com/21XTazCWJ1mZNKm6M77DR3fYatO7waC69g0vdcoVsd_XTOl4QQeq7ytj_lLW1vHUVCMHzPqvpKI- "First five rows of the data set")
 
-The focus of this study will be on closing prices for each day, ignoring intra-day fluctuations. To organize the data frame I will pivot the data frame using date as index, with one column for each stock ticker.
+
+
 
 ### Exploratory Visualization
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 - _Have you visualized a relevant characteristic or feature about the dataset or input data?_
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
+
+The focus of this study will be on closing prices for each day, ignoring intra-day fluctuations. To organize the data frame I will pivot the data frame using date as index, with one column for each stock ticker.
+
+```python
+def get_df():
+    df = pd.read_csv('./data/all_stocks_5yr.csv')
+    df = df.pivot(index='date', columns='Name', values='close')
+
+    return df
+```
+Each row is now a date containing price data for all stocks in the index, reducing the total number of rows in the data set from 619 040 to 1 259.
+
+![
+](https://lh3.googleusercontent.com/AWM7SDvNkJTGBtJENPZsqA3WF3HIOXaEbqlycH5jq0HexDG_M7vGIOnJM6S-8yqPri3drmKwbOrd "Pivoted data frame")
+
+So what can we use all of this pricing data for? Plotting a stock (column) over time gives us a nice visualization of the stocks performance over time. This is a useful starting point for any analysis, and gives us hints of general performance, volatility, seasonality and other factors.
+
+![enter image description here](https://lh3.googleusercontent.com/sYU05kE50_swkoSltYuH46istmDiiMLhzoTZ9kCKR456u1diFDKL5Vyp1m61_5qPzCOOt5TNWtJJ "Google price from 2013 to 2018")
+
+As we can see from looking at the share prices of Google (above) and Apple (below), their stocks have performed well over the last five years. This is not surprising, as we are looking at two of the most successful tech companies operating today. However, it is interesting to note both stocks seem to experience a marked decline at the end of our time period. In fact, this probably did not have anything to do with the companies themselves. A lot of stocks fell in February 2018, which was the worth month for the S&P 500 in two years. Some stocks fell more than others, while some didn't fall at all.
+
+![enter image description here](https://lh3.googleusercontent.com/O7CPsiCZtdc1aPndA7ayPbL8-6aGrPxHlX-F3K_X9JProYCp44_PYyXUv29YOc5nooozjo5c_PIw "Apple price from 2013 to 2018")
+
+![enter image description here](https://lh3.googleusercontent.com/JF9DG9P2r4oIH-ZfrtmxTEcVddHdmnuUt829uf4C0Am6WR6YOM_7ywtF9C30apNBGQiJqM8izCYV "Heatmap of stock correlation")
+
+The heatmap reveals correlation between groups of companies. We know that stocks in general have tended to increase in value over time, but the heatmap reveals both positive and negative correlation, of different strength. If we infer from this that the price of groups of companies tend to move together, can we gain an edge by studying this relationship using machine learning? The assumption that certain companies move together makes a lot of sense. For instance, we expect the profits (and thus share price) of companies in the oil industry to be linked to the oil price, and we expect retail companies to linked to eg. the disposable income of consumers or the unemployment rate. There might also be relationships that are less obvious to a human, but might be revealed using machine learning. In most cases, we would not expect the stock prices to move simultaneously for all companies. Some companies will lead, some will lag. It is this relationship I want to study more closely, which might give us an edge in deciding whether to buy, sell or hold a certain stock.
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
@@ -76,8 +101,8 @@ In this section, you will need to discuss the algorithms and techniques you inte
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
 - _Has some result or value been provided that acts as a benchmark for measuring performance?_
 - _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
-As a
-benchmark I'll use an out-of-the-box SVM, which we can hopefully outperform.
+
+As a benchmark I'll use an out-of-the-box SVM, which we can hopefully outperform.
 
 ## III. Methodology
 _(approx. 3-5 pages)_
