@@ -31,7 +31,11 @@ edge and narrow our focus when selecting stocks, would be valuable.
 ### Problem Statement
 
 The problem I wish to analyze in this project is whether we can predict the
-future price of a stock. The scope of this project will be limited due to time
+future price of a stock. Specifically, I will label stocks as either buy, sell or
+hold based on changes in its price within a period of time, and treat this as a
+classification problem.
+
+The scope of this project will be limited due to time
 constraints, so I will initially attempt to predict future prices based on
 historical prices. This is unlikely to provide great insight in itself, but might
 be a useful starting point to elaborate further on, and expand the analysis.
@@ -43,6 +47,13 @@ My data set consists of five years of stock data for SP 500 companies. The data
 includes opening prices, as well as high, low and closing prices. The data set
 can be found here: https://www.kaggle.com/camnugent/sandp500/home
 
+The data set contains 619 000 rows of data, one for each date for each company
+starting from February 2003 and going till Februar 2018. I will focus on closing
+prices, and pivot the dataframe to sort using date as the index, and give each
+company its own column.
+
+I will be using cross validation to split the data into training and test sets.
+
 I also have data sets containing financial figures for the same companies, which
 may or may not be used, depending on how the project develops and the time I
 have available.
@@ -50,20 +61,24 @@ have available.
 ### Solution Statement
 
 "Solving" the problem is measured by obtaining future stock prices in USD, and
-is as such quantifiable and easy to understand.
+classifying the stock as either a buy or sell, or to simply keep holding the stock.
+As such it is quantifiable and easy to understand.
+
+To help me solve this problem I will attempt to use supervised learnining, more
+specifically SVM, k-nearest neighbors and random forest classfier.
 
 ### Benchmark Model
 
 I am a bit unsure of the appropriate benchmark model in this case, but the
-stock prices are given, and can be checked against the predictions. Any feedback
-on models appreciated.
+stock prices are given, and can be checked against the predictions. As a
+benchmark I'll use an out-of-the-box SVM, which we can hopefully outperform.
 
 ### Evaluation Metrics
 
-My plan is to test different models and try to experiment with model paramterers
-to find good fits, and evaluate the model accuracy and regression metrics if
-relevant, like mean square error. These metrics will be subject to change as the
-project takes shape.
+My plan is to test different models and try to experiment with model parameters
+to find good fits. As I have landed on a classification problem I will most
+likely use AUC as my metric. However, these metrics may be subject to change as
+the project takes shape.
 
 ### Project Design
 
@@ -81,7 +96,17 @@ a data set downloaded using Yahoo Finance some time ago, only to find that they
 no longer offer the same services as before.
 
 My task now is preparing the data set for further analysis, and preprocessing it
-for machine learning. I will visualize some stocks prices to look at different
+for machine learning. Since pricing data itself will vary from company to
+company, and depend on the number of shares issued, one way to normalize the
+data will be to look at percentage change in the prices. I will use these
+percentage changes as my features determining the labels: buy, sell or hold.
+The hypothesis is that some positive percentage change in price over a given
+period of time will indicate a buy, and a negative change indicates a sell.
+Choosing the appropriate time period and acceptable percentage change is important,
+as we do not want to "buy high and sell low", but if we have a fairly short
+time period and a modest price change, it seems plausible this could give us an edge.
+
+I will visualize some stocks prices to look at different
 companies and trends in general, and see if we can learn something from looking
 at specific sectors or companies over time.
 
@@ -91,6 +116,9 @@ labeling the stocks as either buy or sell using some metrics like percent change
 in price over a period, I want to try and classify
 using random forest. Ideally, this labeling would incorporate financial data
 from the accounts as well, but this might be beyond the scope of this project.
+Using SVM and k-nearest neighbors I've already mentioned above, and given your
+feedback I also want to try XGBoost and possibly LightGBM, depending on
+complexity.
 
 
 -----------
