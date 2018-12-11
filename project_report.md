@@ -87,9 +87,12 @@ As we can see from looking at the share prices of Google (above) and Apple (belo
 
 ![enter image description here](https://lh3.googleusercontent.com/O7CPsiCZtdc1aPndA7ayPbL8-6aGrPxHlX-F3K_X9JProYCp44_PYyXUv29YOc5nooozjo5c_PIw "Apple price from 2013 to 2018")
 
-![enter image description here](https://lh3.googleusercontent.com/JF9DG9P2r4oIH-ZfrtmxTEcVddHdmnuUt829uf4C0Am6WR6YOM_7ywtF9C30apNBGQiJqM8izCYV "Heatmap of stock correlation")
+We can also look at the correlation between stocks, and visualize this as a heat map. Plotting all companies together produces the following graph, here zoomed in (right) to look at only the first companies in the index.
 
-The heatmap reveals correlation between groups of companies. We know that stocks in general have tended to increase in value over time, but the heatmap reveals both positive and negative correlation, of different strength. If we infer from this that the price of groups of companies tend to move together, can we gain an edge by studying this relationship using machine learning? The assumption that certain companies move together makes a lot of sense. For instance, we expect the profits (and thus share price) of companies in the oil industry to be linked to the oil price, and we expect retail companies to linked to eg. the disposable income of consumers or the unemployment rate. There might also be relationships that are less obvious to a human, but might be revealed using machine learning. In most cases, we would not expect the stock prices to move simultaneously for all companies. Some companies will lead, some will lag. It is this relationship I want to study more closely, which might give us an edge in deciding whether to buy, sell or hold a certain stock.
+![
+](https://lh3.googleusercontent.com/nHTvTd9xgGv7uBiKHTT42TeyT5bmZK-LTN2VjEm6Nhpuhh9XZlgpm1kXcyj5_fkpb8eAQ-5eBaK6 "Heat map of stock correlation")
+
+The heat map reveals correlation between groups of companies. We know that stocks in general have tended to increase in value over time, but the heat map reveals both positive and negative correlation, of different strength. This is useful for at least two reasons: To hold a diversified portfolio, we want to avoid having all of our assets being positively correlated. Secondly, if we infer from this that the price of groups of companies tend to move together, can we gain an edge by studying this relationship using machine learning? The assumption that certain companies move together makes a lot of sense. For instance, we expect the profits (and thus share price) of companies in the oil industry to be linked to the oil price, and we expect retail companies to linked to e.g. the disposable income of consumers or the unemployment rate. There might also be relationships that are less obvious to a human, but might be revealed using machine learning. In most cases, we would not expect the stock prices to move simultaneously for all companies. Some companies will lead, some will lag. It is this relationship I want to study more closely, which might give us an edge in deciding whether to buy, sell or hold a certain stock.
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
@@ -112,6 +115,12 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
 - _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
 - _If no preprocessing is needed, has it been made clear why?_
+
+Prepare data for analysis:
+
+-   Normalize data: Convert stock prices to percentage change. These changes will be our features, determining our labels (buy, sell, hold).
+-   Issue? We're training data on 5 years of data, checking correlation. Too long period might be a problem due to companies' relationships to changing over time
+-   On average, stocks increase over time. Is our strategy better than a simply buying? -> buy and hold
 
 ### Implementation
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
